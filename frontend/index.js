@@ -44,6 +44,12 @@ function formTemplate(){
   `;
 }
 
+function placesTemplate(){
+  return `
+  <h3> My Favorite Places
+  <div id="places"></div>`
+}
+
 function renderPlace(place) {
   let div = document.createElement("div");
   let h4 = document.createElement("h4");

@@ -10,6 +10,7 @@ function resetMain(){
   main().innerHTML = "";
 }
 
-function addPlaceLink(){
-  return document.getElementById("add-place")
+function formLink(){
+  return document.getElementById("form")
 }
+

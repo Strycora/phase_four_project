@@ -31,3 +31,17 @@ function formTemplate(){
   </form>
   `;
 }
+
+function renderForm() {
+  resetMain();
+  main().innerHTML = formTemplate();
+  form().addEventListener("submit", submitForm);
+}
+
+function formLinkEvent() {
+  formLink().addEventListener("click", function (e) {
+    e.preventDefault();
+
+    renderForm();
+  });
+}

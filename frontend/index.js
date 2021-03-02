@@ -26,6 +26,10 @@ function formLink(){
   return document.getElementById("form-link")
 }
 
+function placesLink(){
+  return document.getElementById("places-link")
+}
+
 function formTemplate(){
   return `
   <h3>Add a Favorite Place</h3>
@@ -47,7 +51,8 @@ function formTemplate(){
 function placesTemplate(){
   return `
   <h3> My Favorite Places
-  <div id="places"></div>`
+  <div id="places"></div>
+  `
 }
 
 function renderPlace(place) {
@@ -118,6 +123,14 @@ function formLinkEvent() {
 
     renderForm();
   });
+}
+
+function placesLinkEvent(){
+  placesLink.addEventListener("click", function(e){
+    e.preventDefault
+
+    renderPlaces();
+  })
 }
 
 

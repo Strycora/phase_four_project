@@ -11,6 +11,5 @@ function resetMain(){
 }
 
 function formLink(){
-  return document.getElementById("form")
+  return document.getElementById("form-link")
 }
-

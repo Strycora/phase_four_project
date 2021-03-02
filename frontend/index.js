@@ -30,6 +30,14 @@ function placesLink(){
   return document.getElementById("places-link")
 }
 
+async function getPlaces() {
+
+  const resp = await fetch(baseUrl + '/places')
+  const data = await resp.json();
+  places = data
+  renderPlaces();
+}
+
 function formTemplate(){
   return `
   <h3>Add a Favorite Place</h3>
@@ -135,6 +143,7 @@ function placesLinkEvent(){
 
 
 document.addEventListener("DOMContentLoaded", function () {
+  getPlaces();
   formLinkEvent();
   placesLinkEvent();
 });

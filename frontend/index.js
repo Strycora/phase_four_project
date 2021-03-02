@@ -44,6 +44,62 @@ function formTemplate(){
   `;
 }
 
+function renderPlace(place) {
+  let div = document.createElement("div");
+  let h4 = document.createElement("h4");
+  let p = document.createElement("p");
+  // let deleteLink = document.createElement("a");
+  // let editLink = document.createElement("a");
+  let placesDiv = document.getElementById("places");
+
+  //edit and delete links go here w/event listeners
+
+
+  h4.innerText = place.name;
+  p.innerText = place.description;
+
+  div.appendChild(h4);
+  div.appendChild(p);
+  //append edit and delete links here
+  placesDiv.appendChild(div);
+}
+
+function renderPlaces() {
+  resetMain();
+  main().innerHTML = placesTemplate();
+
+  places.forEach(function (place) {
+    renderPlace(place);
+  });
+}
+
+function submitForm(e) {
+  e.preventDefault();
+
+  let strongParams = {
+    place: {
+      name: nameInput().value,
+      description: descriptionInput().value,
+    }
+  }
+
+  fetch(baseUrl + '/places', {
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(strongParams),
+    method: "POST"
+  })
+    .then( function(resp) {
+      return resp.json();
+    })
+    .then( function(place) {
+      places.push(place)
+      renderPlaces();
+    })
+}
+
 function renderForm() {
   resetMain();
   main().innerHTML = formTemplate();

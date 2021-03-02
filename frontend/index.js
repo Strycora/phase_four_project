@@ -45,3 +45,7 @@ function formLinkEvent() {
     renderForm();
   });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  formLinkEvent();
+});

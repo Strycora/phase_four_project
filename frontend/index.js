@@ -6,8 +6,20 @@ function main(){
   return document.getElementById("main");
 }
 
+function nameInput(){
+  return document.getElementById("name");
+}
+
+function descriptionInput(){
+  return document.getElementById("description");
+}
+
 function resetMain(){
   main().innerHTML = "";
+}
+
+function form() {
+  return document.getElementById("form");
 }
 
 function formLink(){
@@ -45,6 +57,7 @@ function formLinkEvent() {
     renderForm();
   });
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
   formLinkEvent();

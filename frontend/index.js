@@ -136,4 +136,5 @@ function placesLinkEvent(){
 
 document.addEventListener("DOMContentLoaded", function () {
   formLinkEvent();
+  placesLinkEvent();
 });

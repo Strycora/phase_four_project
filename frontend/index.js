@@ -126,7 +126,7 @@ function formLinkEvent() {
 }
 
 function placesLinkEvent(){
-  placesLink.addEventListener("click", function(e){
+  placesLink().addEventListener("click", function(e){
     e.preventDefault
 
     renderPlaces();

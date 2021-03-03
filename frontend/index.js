@@ -67,12 +67,16 @@ function renderPlace(place) {
   let div = document.createElement("div");
   let h4 = document.createElement("h4");
   let p = document.createElement("p");
-  // let deleteLink = document.createElement("a");
+  let deleteLink = document.createElement("a");
   // let editLink = document.createElement("a");
   let placesDiv = document.getElementById("places");
 
   //edit and delete links go here w/event listeners
+  deleteLink.dataset.id = place.id
+  deleteLink.setAttribute("href", "#")
+  deleteLink.innerText = "Delete"
 
+  deleteLink.addEventListener("click", deletePlace)
 
   h4.innerText = place.name;
   p.innerText = place.description;
@@ -80,7 +84,29 @@ function renderPlace(place) {
   div.appendChild(h4);
   div.appendChild(p);
   //append edit and delete links here
+  div.appendChild(deleteLink);
   placesDiv.appendChild(div);
+}
+
+async function deletePlace(e){
+  e.preventDefault();
+
+  let id = e.target.dataset.id
+
+  const resp = await fetch(baseUrl + "/places/" + id, {
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    method: "DELETE"
+  })
+  const data = await resp.json();
+
+  places = places.filter(function(place){
+    return place.id !== data.id;
+  })
+
+  renderPlaces();
 }
 
 function renderPlaces() {

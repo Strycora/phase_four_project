@@ -36,6 +36,7 @@ class PlacesController < ApplicationController
   # DELETE /places/1
   def destroy
     @place.destroy
+    render json: @place
   end
 
   private

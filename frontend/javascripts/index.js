@@ -1,4 +1,4 @@
-let places = []
+
 
 const baseUrl = "http://localhost:3000"
 
@@ -34,8 +34,12 @@ async function getPlaces() {
 
   const resp = await fetch(baseUrl + '/places')
   const data = await resp.json();
-  places = data
-  renderPlaces();
+  data.forEach(p => {
+    let pl = new Place(p.id, p.name, p.description)
+    pl.renderPlace();
+  })
+  
+  
 }
 
 function formTemplate(){
@@ -57,35 +61,10 @@ function formTemplate(){
 }
 
 function placesTemplate(){
-  return `
+  main().innerHTML += `
   <h3> My Favorite Places
   <div id="places"></div>
   `
-}
-
-function renderPlace(place) {
-  let div = document.createElement("div");
-  let h4 = document.createElement("h4");
-  let p = document.createElement("p");
-  let deleteLink = document.createElement("a");
-  // let editLink = document.createElement("a");
-  let placesDiv = document.getElementById("places");
-
-  //edit and delete links go here w/event listeners
-  deleteLink.dataset.id = place.id
-  deleteLink.setAttribute("href", "#")
-  deleteLink.innerText = "Delete"
-
-  deleteLink.addEventListener("click", deletePlace)
-
-  h4.innerText = place.name;
-  p.innerText = place.description;
-
-  div.appendChild(h4);
-  div.appendChild(p);
-  //append edit and delete links here
-  div.appendChild(deleteLink);
-  placesDiv.appendChild(div);
 }
 
 async function deletePlace(e){
@@ -101,22 +80,14 @@ async function deletePlace(e){
     method: "DELETE"
   })
   const data = await resp.json();
-
-  places = places.filter(function(place){
+  
+  let places = Place.all.filter(function(place){
     return place.id !== data.id;
   })
-
-  renderPlaces();
+  console.log(places);
+  Place.renderPlaces();
 }
 
-function renderPlaces() {
-  resetMain();
-  main().innerHTML = placesTemplate();
-
-  places.forEach(function (place) {
-    renderPlace(place);
-  });
-}
 
 function submitForm(e) {
   e.preventDefault();
@@ -140,14 +111,15 @@ function submitForm(e) {
       return resp.json();
     })
     .then( function(place) {
-      places.push(place)
-      renderPlaces();
+      let pl = new Place(place.id, place.name, place.description)
+      pl.renderPlace();
     })
 }
 
 function renderForm() {
   resetMain();
-  main().innerHTML = formTemplate();
+  placesTemplate();
+  main().innerHTML += formTemplate();
   form().addEventListener("submit", submitForm);
 }
 
@@ -163,12 +135,13 @@ function placesLinkEvent(){
   placesLink().addEventListener("click", function(e){
     e.preventDefault
 
-    renderPlaces();
+    Place.renderPlaces();
   })
 }
 
 
 document.addEventListener("DOMContentLoaded", function () {
+  placesTemplate();
   getPlaces();
   formLinkEvent();
   placesLinkEvent();

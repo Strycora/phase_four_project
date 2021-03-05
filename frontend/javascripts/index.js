@@ -41,9 +41,7 @@ async function getPlaces() {
   data.forEach(p => {
     let pl = new Place(p.id, p.name, p.description)
     pl.renderPlace();
-  })
-  
-  
+  }) 
 }
 
 function formTemplate(){
@@ -70,27 +68,6 @@ function placesTemplate(){
   <div id="places"></div>
   `
 }
-
-// async function deletePlace(e){
-//   e.preventDefault();
-
-//   let id = e.target.dataset.id
-
-//   const resp = await fetch(baseUrl + "/places/" + id, {
-//     headers: {
-//       "Accept": "application/json",
-//       "Content-Type": "application/json"
-//     },
-//     method: "DELETE"
-//   })
-//   const data = await resp.json();
-  
-//   let places = Place.all.filter(function(place){
-//     return place.id !== data.id;
-//   })
-//   console.log(places);
-//   Place.renderPlaces();
-// }
 
 function deletePlace(e){
   e.preventDefault();
@@ -122,8 +99,6 @@ function deletePlace(e){
     })
 }
    
-
-
 function submitForm(e) {
   e.preventDefault();
 
@@ -173,7 +148,6 @@ function placesLinkEvent(){
     Place.renderPlaces();
   })
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
   placesTemplate();

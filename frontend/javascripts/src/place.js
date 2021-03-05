@@ -14,14 +14,11 @@ class Place {
     let h4 = document.createElement("h4");
     let p = document.createElement("p");
     let deleteLink = document.createElement("a");
-    // let editLink = document.createElement("a");
     let placesDiv = document.getElementById("places");
-  
-    //edit and delete links go here w/event listeners
+
     deleteLink.dataset.id = this.id
     deleteLink.setAttribute("href", "#")
     deleteLink.innerText = "Delete"
-  
     deleteLink.addEventListener("click", deletePlace)
   
     h4.innerText = this.name;
@@ -29,7 +26,6 @@ class Place {
   
     div.appendChild(h4);
     div.appendChild(p);
-    //append edit and delete links here
     div.appendChild(deleteLink);
     placesDiv.appendChild(div);
   }
@@ -42,4 +38,5 @@ class Place {
       place.renderPlace();
     });
   }
+
 }

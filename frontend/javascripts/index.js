@@ -22,6 +22,10 @@ function form() {
   return document.getElementById("form");
 }
 
+function placesList(){
+  return document.getElementById("places");
+}
+
 function formLink(){
   return document.getElementById("form-link")
 }
@@ -67,26 +71,57 @@ function placesTemplate(){
   `
 }
 
-async function deletePlace(e){
+// async function deletePlace(e){
+//   e.preventDefault();
+
+//   let id = e.target.dataset.id
+
+//   const resp = await fetch(baseUrl + "/places/" + id, {
+//     headers: {
+//       "Accept": "application/json",
+//       "Content-Type": "application/json"
+//     },
+//     method: "DELETE"
+//   })
+//   const data = await resp.json();
+  
+//   let places = Place.all.filter(function(place){
+//     return place.id !== data.id;
+//   })
+//   console.log(places);
+//   Place.renderPlaces();
+// }
+
+function deletePlace(e){
   e.preventDefault();
 
   let id = e.target.dataset.id
 
-  const resp = await fetch(baseUrl + "/places/" + id, {
+  fetch(baseUrl + '/places/' + id, {
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
     },
     method: "DELETE"
   })
-  const data = await resp.json();
-  
-  let places = Place.all.filter(function(place){
-    return place.id !== data.id;
-  })
-  console.log(places);
-  Place.renderPlaces();
+    .then( function(resp) {
+      return resp.json();
+    })
+    .then( function(data){
+      let result; 
+      for (let i = 0 ; i < Place.all.length; i++){
+        if (Place.all[i].name === data.name){
+           result = Place.all.splice(i, 1)
+           
+          }
+        }
+    placesList().innerHTML = "";
+    Place.all.forEach(p => {
+          p.renderPlace();
+        })
+    })
 }
+   
 
 
 function submitForm(e) {

@@ -3,9 +3,10 @@ class PlacesController < ApplicationController
 
   # GET /places
   def index
-    @places = Place.all
-
-    render json: @places
+    places = Place.all
+    options = {include: [:comments]}
+    render json: PlaceSerializer.new(places, options)
+    #render json: @places
   end
 
   # GET /places/1

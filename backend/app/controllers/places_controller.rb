@@ -4,9 +4,9 @@ class PlacesController < ApplicationController
   # GET /places
   def index
     places = Place.all
-    options = {include: [:comments]}
-    render json: PlaceSerializer.new(places, options)
-    #render json: @places
+    # options = {include: [:comments]}
+    # render json: PlaceSerializer.new(places, options)
+    render json: places, include: [:comments]
   end
 
   # GET /places/1
@@ -48,6 +48,6 @@ class PlacesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def place_params
-      params.require(:place).permit(:name, :description)
+      params.require(:place).permit(:name, :description, comments_attributes: [:text])
     end
 end

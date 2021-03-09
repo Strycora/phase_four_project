@@ -62,9 +62,54 @@ function formTemplate(){
   `;
 }
 
+function addComment(event){
+  let div = event.target.parentElement
+  let id = event.target.dataset.id
+  div.innerHTML += `
+  <form id="form">
+    <div class="input-field">
+      <label for="comment">Comment</label>
+      <input type="text" name="comment" id="comment" />
+    </div>
+    <input type="submit" id=commentSubmit value="Add Comment" />
+  </form>
+  ` 
+  let commentElement = document.getElementById("comment");
+  let commentSubmit = document.getElementById("commentSubmit");
+  commentSubmit.addEventListener("click", function(e){
+    e.preventDefault();
+   
+    let text = commentElement.value;
+      let comment = {
+        text: text,
+        place_id: id
+      }
+      fetch(`${baseUrl}/comments`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        
+        body: JSON.stringify(comment)
+    })
+    .then(resp => resp.json())
+    .then(comment => {
+        let c = new Comment(comment.id, comment.text, comment.place_id)
+        let placeDiv = document.getElementById(event.target.dataset.id)
+        let p = document.createElement("p")
+        p.innerText = c.text
+        placeDiv.appendChild(p)
+
+      })
+})
+}
+
+
+
 function placesTemplate(){
   main().innerHTML += `
-  <h3> My Favorite Places
+  <h3> My Favorite Places </h3>
   <div id="places"></div>
   `
 }

@@ -45,6 +45,7 @@ class Place {
     Place.all.forEach(function (place) {
       place.renderPlace();
     });
+    getComments();
   }
 
 }

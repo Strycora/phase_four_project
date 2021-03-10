@@ -120,9 +120,9 @@ class Place {
       .then( function(resp) {
         return resp.json();
       })
-      .then( function(place) {
-        let pl = new Place(place.id, place.name, place.description)
-        pl.renderPlace();
+      .then( function(data) {
+        Place.create(data);
+        Place.renderPlaces();
       })
   }
 

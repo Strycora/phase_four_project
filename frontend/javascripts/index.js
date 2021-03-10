@@ -1,37 +1,6 @@
 
-
-const baseUrl = "http://localhost:3000"
-
-function main(){
-  return document.getElementById("main");
-}
-
-function nameInput(){
-  return document.getElementById("name");
-}
-
-function descriptionInput(){
-  return document.getElementById("description");
-}
-
 function resetMain(){
   main().innerHTML = "";
-}
-
-function form() {
-  return document.getElementById("form");
-}
-
-function placesList(){
-  return document.getElementById("places");
-}
-
-function formLink(){
-  return document.getElementById("form-link")
-}
-
-function placesLink(){
-  return document.getElementById("places-link")
 }
 
 async function getPlaces() {
@@ -126,16 +95,8 @@ function addComment(event){
 })
 }
 
-function deleteComment(){
-  console.log("comment deleted");
-}
 
-function placesTemplate(){
-  main().innerHTML += `
-  <h3> My Favorite Places </h3>
-  <div id="places"></div>
-  `
-}
+
 
 function deletePlace(e){
   e.preventDefault();
@@ -196,7 +157,7 @@ function submitForm(e) {
 
 function renderForm() {
   resetMain();
-  placesTemplate();
+  Place.placesTemplate();
   main().innerHTML += formTemplate();
   form().addEventListener("submit", submitForm);
 }
@@ -218,7 +179,7 @@ function placesLinkEvent(){
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  placesTemplate();
+  Place.placesTemplate();
   getPlaces();
   formLinkEvent();
   placesLinkEvent();

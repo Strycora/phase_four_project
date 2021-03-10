@@ -1,13 +1,36 @@
 class Place {
 
-  constructor(id, name, description){
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    Place.all.push(this)
+  constructor(attr){
+    this.id = attr.id;
+    this.name = attr.name;
+    this.description = attr.description;
   }
 
   static all = []
+
+  save(){
+    Place.all.push(this);
+  }
+
+  static createFromCollection(collection){
+    collection.forEach(data => Place.create(data))
+  }
+
+  static create(attr){
+    let place = new Place(attr);
+    place.save();
+    return place;
+  }
+
+  static renderPlaces() {
+    resetMain();
+    placesTemplate();
+  
+    Place.all.forEach(function (place) {
+      place.renderPlace();
+    });
+    getComments();
+  }
 
    renderPlace() {
     let div = document.createElement("div");
@@ -38,14 +61,15 @@ class Place {
     placesDiv.appendChild(div);
   }
 
-  static renderPlaces() {
-    resetMain();
-    placesTemplate();
-  
-    Place.all.forEach(function (place) {
-      place.renderPlace();
-    });
-    getComments();
+  //Templates
+
+  static placesTemplate(){
+    main().innerHTML += `
+    <h3> My Favorite Places </h3>
+    <div id="places"></div>
+    `
   }
+
+  
 
 }

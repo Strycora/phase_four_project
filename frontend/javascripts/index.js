@@ -42,6 +42,17 @@ async function getPlaces() {
     let pl = new Place(p.id, p.name, p.description)
     pl.renderPlace();
   }) 
+  getComments();
+}
+
+async function getComments(){
+  Comment.clearComments();
+  const resp = await fetch(baseUrl + '/comments')
+  const data = await resp.json();
+  data.forEach(c => {
+    let comment = new Comment(c.id, c.text, c.place_id);
+    comment.renderComment();
+  })
 }
 
 function formTemplate(){
@@ -65,21 +76,24 @@ function formTemplate(){
 function addComment(event){
   let div = event.target.parentElement
   let id = event.target.dataset.id
-  div.innerHTML += `
-  <form id="form">
-    <div class="input-field">
-      <label for="comment">Comment</label>
-      <input type="text" name="comment" id="comment" />
-    </div>
-    <input type="submit" id=commentSubmit value="Add Comment" />
-  </form>
-  ` 
-  let commentElement = document.getElementById("comment");
-  let commentSubmit = document.getElementById("commentSubmit");
+
+  let commentInput = document.createElement("INPUT")
+    commentInput.type = 'TEXT';
+    commentInput.name = 'comment';
+    commentInput.id = 'commentInput';
+    commentInput.type = 'TEXT';
+    commentInput.placeholder = "comment";
+  const commentSubmit = document.createElement("button")
+    commentSubmit.id = "commentSubmit";
+    commentSubmit.innerHTML = "Add Comment"
+
+  div.appendChild(commentInput);
+  div.appendChild(commentSubmit);
+
   commentSubmit.addEventListener("click", function(e){
     e.preventDefault();
    
-    let text = commentElement.value;
+    let text = commentInput.value;
       let comment = {
         text: text,
         place_id: id
@@ -98,14 +112,23 @@ function addComment(event){
         let c = new Comment(comment.id, comment.text, comment.place_id)
         let placeDiv = document.getElementById(event.target.dataset.id)
         let p = document.createElement("p")
-        p.innerText = c.text
-        placeDiv.appendChild(p)
+          p.id = `Comment${c.id}`
+        let deleteButton = document.createElement("button");
+          deleteButton.id = "deleteButton";
+          deleteButton.innerHTML = "Delete Comment";
+          deleteButton.addEventListener("click", deleteComment)
 
+        p.innerText = c.text;
+        placeDiv.appendChild(p);
+        placeDiv.appendChild(deleteButton);
+        c.save();
       })
 })
 }
 
-
+function deleteComment(){
+  console.log("comment deleted");
+}
 
 function placesTemplate(){
   main().innerHTML += `

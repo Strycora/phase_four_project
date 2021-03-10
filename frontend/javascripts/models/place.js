@@ -22,15 +22,7 @@ class Place {
     return place;
   }
 
-  static renderPlaces() {
-    resetMain();
-    placesTemplate();
-  
-    Place.all.forEach(function (place) {
-      place.renderPlace();
-    });
-    getComments();
-  }
+
 
    renderPlace() {
     let div = document.createElement("div");
@@ -70,6 +62,68 @@ class Place {
     `
   }
 
+  static formTemplate(){
+    return `
+    <h3>Add a Favorite Place</h3>
+    <form id="form">
+      <div class="input-field">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" />
+      </div>
   
+      <div class="input-field">
+        <label for="description">Description</label><br />
+        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+      </div>
+      <input type="submit" value="Add Place" />
+    </form>
+    `;
+  }
+
+  //Renders
+
+  static renderForm() {
+    resetMain();
+    Place.placesTemplate();
+    main().innerHTML += Place.formTemplate();
+    form().addEventListener("submit", Place.submitForm);
+  }
+
+  static renderPlaces() {
+    resetMain();
+    placesTemplate();
+  
+    Place.all.forEach(function (place) {
+      place.renderPlace();
+    });
+    getComments();
+  }
+
+  static submitForm(e) {
+    e.preventDefault();
+  
+    let strongParams = {
+      place: {
+        name: nameInput().value,
+        description: descriptionInput().value,
+      }
+    }
+  
+    fetch(baseUrl + '/places', {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(strongParams),
+      method: "POST"
+    })
+      .then( function(resp) {
+        return resp.json();
+      })
+      .then( function(place) {
+        let pl = new Place(place.id, place.name, place.description)
+        pl.renderPlace();
+      })
+  }
 
 }

@@ -68,12 +68,12 @@ class Place {
     <form id="form">
       <div class="input-field">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name" />
+        <input type="text" name="name" id="name" required/>
       </div>
   
       <div class="input-field">
         <label for="description">Description</label><br />
-        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+        <textarea name="description" id="description" cols="30" rows="10" required></textarea>
       </div>
       <input type="submit" value="Add Place" />
     </form>
@@ -165,9 +165,10 @@ class Place {
             }
           }
       placesList().innerHTML = "";
-      Place.all.forEach(p => {
-            p.renderPlace();
-          })
+      Place.renderPlaces();
+      // Place.all.forEach(p => {
+      //       p.renderPlace();
+      //     })
       })
   }
 

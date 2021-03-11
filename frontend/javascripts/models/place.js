@@ -4,6 +4,8 @@ class Place {
     this.id = attr.id;
     this.name = attr.name;
     this.description = attr.description;
+    this.ImageUrl = attr.ImageUrl;
+
   }
 
   static all = []
@@ -28,6 +30,10 @@ class Place {
     let div = document.createElement("div");
     let h4 = document.createElement("h4");
     let p = document.createElement("p");
+    let img = document.createElement("img");
+      img.src = this.ImageUrl;
+      img.height = 200
+      img.width = 200
     let deleteLink = document.createElement("a");
     let commentBtn = document.createElement("button");
     let placesDiv = document.getElementById("places");
@@ -48,6 +54,10 @@ class Place {
   
     div.appendChild(h4);
     div.appendChild(p);
+    if (this.ImageUrl != ""){
+    div.appendChild(img);
+    }
+    div.appendChild(document.createElement("br"))
     div.appendChild(deleteLink);
     div.appendChild(commentBtn);
     placesDiv.appendChild(div);
@@ -75,6 +85,12 @@ class Place {
         <label for="description">Description</label><br />
         <textarea name="description" id="description" cols="30" rows="10" required></textarea>
       </div>
+
+      <div class="input-field">
+        <label for="imageUrl">Image</label>
+        <input type="text" name="imageUrl" id="imageUrl" />
+      </div><br>
+
       <input type="submit" value="Add Place" />
     </form>
     `;
@@ -106,9 +122,11 @@ class Place {
       place: {
         name: nameInput().value,
         description: descriptionInput().value,
+        ImageUrl: imageUrlInput().value
       }
     }
   
+    
     fetch(baseUrl + '/places', {
       headers: {
         "Accept": "application/json",
@@ -119,6 +137,7 @@ class Place {
     })
       .then( function(resp) {
         return resp.json();
+        
       })
       .then( function(data) {
         Place.create(data);
@@ -130,15 +149,9 @@ class Place {
 
     const resp = await fetch(baseUrl + '/places')
     const data = await resp.json();
-
-    
-    // data.forEach(p => {
-    //   let pl = new Place(p.id, p.name, p.description)
-    //   pl.renderPlace();
-    // }) 
     Place.createFromCollection(data);
     Place.renderPlaces()
-    // getComments();
+
   }
 
   static deletePlace(e){
@@ -166,9 +179,6 @@ class Place {
           }
       placesList().innerHTML = "";
       Place.renderPlaces();
-      // Place.all.forEach(p => {
-      //       p.renderPlace();
-      //     })
       })
   }
 

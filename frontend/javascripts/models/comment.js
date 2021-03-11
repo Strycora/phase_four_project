@@ -7,8 +7,14 @@ class Comment{
 
   static all = []
 
-  save(){
-    Comment.all.push(this);
+  static async getComments(){
+    Comment.clearComments();
+    const resp = await fetch(baseUrl + '/comments')
+    const data = await resp.json();
+    data.forEach(c => {
+      let comment = new Comment(c.id, c.text, c.place_id);
+      comment.renderComment();
+    })
   }
 
   static clearComments(){
@@ -24,4 +30,58 @@ class Comment{
   
     p.innerText = this.text
   }
+
+  save(){
+    Comment.all.push(this);
+  }
+
+  static addComment(event){
+    let div = event.target.parentElement
+    let id = event.target.dataset.id
+  
+    let commentInput = document.createElement("INPUT")
+      commentInput.type = 'TEXT';
+      commentInput.name = 'comment';
+      commentInput.id = 'commentInput';
+      commentInput.type = 'TEXT';
+      commentInput.placeholder = "comment";
+    const commentSubmit = document.createElement("button")
+      commentSubmit.id = "commentSubmit";
+      commentSubmit.innerHTML = "Add Comment"
+    if (!div.querySelector("INPUT")){
+      div.appendChild(commentInput);
+      div.appendChild(commentSubmit);
+    }
+    commentSubmit.addEventListener("click", function(e){
+      e.preventDefault();
+     
+      let text = commentInput.value;
+        let comment = {
+          text: text,
+          place_id: id
+        }
+        fetch(`${baseUrl}/comments`, {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          
+          body: JSON.stringify(comment)
+      })
+      .then(resp => resp.json())
+      .then(comment => {
+          let c = new Comment(comment.id, comment.text, comment.place_id)
+          let placeDiv = document.getElementById(event.target.dataset.id)
+          let p = document.createElement("p")
+            p.id = `Comment${c.id}`
+            p.innerText = c.text;
+          
+          placeDiv.appendChild(p);
+          c.save();
+        })
+  })
+  }
+
+
 }

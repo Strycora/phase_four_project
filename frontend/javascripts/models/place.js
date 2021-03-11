@@ -34,12 +34,12 @@ class Place {
 
     commentBtn.dataset.id = this.id
     commentBtn.innerText = "Comment"
-    commentBtn.addEventListener("click", addComment)
+    commentBtn.addEventListener("click", Comment.addComment)
 
     deleteLink.dataset.id = this.id
     deleteLink.setAttribute("href", "#")
     deleteLink.innerText = "Delete"
-    deleteLink.addEventListener("click", deletePlace)
+    deleteLink.addEventListener("click", Place.deletePlace)
   
     h4.innerText = this.name;
     p.innerText = this.description;
@@ -91,12 +91,12 @@ class Place {
 
   static renderPlaces() {
     resetMain();
-    placesTemplate();
+    Place.placesTemplate();
   
     Place.all.forEach(function (place) {
       place.renderPlace();
     });
-    getComments();
+    Comment.getComments();
   }
 
   static submitForm(e) {
@@ -123,6 +123,51 @@ class Place {
       .then( function(data) {
         Place.create(data);
         Place.renderPlaces();
+      })
+  }
+
+  static async getPlaces() {
+
+    const resp = await fetch(baseUrl + '/places')
+    const data = await resp.json();
+
+    
+    // data.forEach(p => {
+    //   let pl = new Place(p.id, p.name, p.description)
+    //   pl.renderPlace();
+    // }) 
+    Place.createFromCollection(data);
+    Place.renderPlaces()
+    // getComments();
+  }
+
+  static deletePlace(e){
+    e.preventDefault();
+  
+    let id = e.target.dataset.id
+  
+    fetch(baseUrl + '/places/' + id, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      method: "DELETE"
+    })
+      .then( function(resp) {
+        return resp.json();
+      })
+      .then( function(data){
+        let result; 
+        for (let i = 0 ; i < Place.all.length; i++){
+          if (Place.all[i].name === data.name){
+             result = Place.all.splice(i, 1)
+             
+            }
+          }
+      placesList().innerHTML = "";
+      Place.all.forEach(p => {
+            p.renderPlace();
+          })
       })
   }
 

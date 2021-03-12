@@ -9,8 +9,7 @@ class Comment{
 
   static async getComments(){
     Comment.clearComments();
-    const resp = await fetch(baseUrl + '/comments')
-    const data = await resp.json();
+    const data = await Api.get("/comments")
     data.forEach(c => {
       let comment = new Comment(c.id, c.text, c.place_id);
       comment.renderComment();
@@ -35,7 +34,7 @@ class Comment{
     Comment.all.push(this);
   }
 
-  static addComment(event){
+  static async addComment(event){
     let div = event.target.parentElement
     let id = event.target.dataset.id
   
@@ -60,16 +59,7 @@ class Comment{
           text: text,
           place_id: id
         }
-        fetch(`${baseUrl}/comments`, {
-          method: "POST",
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          
-          body: JSON.stringify(comment)
-      })
-      .then(resp => resp.json())
+      Api.post("/comments", comment)
       .then(comment => {
           let c = new Comment(comment.id, comment.text, comment.place_id)
           let placeDiv = document.getElementById(event.target.dataset.id)
@@ -82,6 +72,4 @@ class Comment{
         })
   })
   }
-
-
 }

@@ -125,20 +125,7 @@ class Place {
         ImageUrl: imageUrlInput().value
       }
     }
-  
-    
-    fetch(baseUrl + '/places', {
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(strongParams),
-      method: "POST"
-    })
-      .then( function(resp) {
-        return resp.json();
-        
-      })
+    Api.post('/places', strongParams)
       .then( function(data) {
         Place.create(data);
         Place.renderPlaces();
@@ -147,29 +134,19 @@ class Place {
 
   static async getPlaces() {
 
-    const resp = await fetch(baseUrl + '/places')
-    const data = await resp.json();
+    const data = await Api.get("/places");
     Place.createFromCollection(data);
     Place.renderPlaces()
 
   }
 
-  static deletePlace(e){
+  static async deletePlace(e){
     e.preventDefault();
   
     let id = e.target.dataset.id
   
-    fetch(baseUrl + '/places/' + id, {
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      method: "DELETE"
-    })
-      .then( function(resp) {
-        return resp.json();
-      })
-      .then( function(data){
+    const data = await Api.delete("/places/" + id)
+      .then(function(data){
         let result; 
         for (let i = 0 ; i < Place.all.length; i++){
           if (Place.all[i].name === data.name){

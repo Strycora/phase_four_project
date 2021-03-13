@@ -4,8 +4,6 @@ class PlacesController < ApplicationController
   # GET /places
   def index
     places = Place.all
-    # options = {include: [:comments]}
-    # render json: PlaceSerializer.new(places, options)
     render json: places, include: [:comments]
   end
 

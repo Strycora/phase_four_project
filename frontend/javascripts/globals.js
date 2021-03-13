@@ -1,6 +1,5 @@
 //Global Variables
 
-const baseUrl = "http://localhost:3000"
 
 
 //Node Getters

@@ -42,7 +42,6 @@ class Comment{
       commentInput.type = 'TEXT';
       commentInput.name = 'comment';
       commentInput.id = 'commentInput';
-      commentInput.type = 'TEXT';
       commentInput.placeholder = "comment";
     const commentSubmit = document.createElement("button")
       commentSubmit.id = "commentSubmit";

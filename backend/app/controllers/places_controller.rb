@@ -23,14 +23,14 @@ class PlacesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /places/1
-  def update
-    if @place.update(place_params)
-      render json: @place
-    else
-      render json: @place.errors, status: :unprocessable_entity
-    end
-  end
+  # # PATCH/PUT /places/1
+  # def update
+  #   if @place.update(place_params)
+  #     render json: @place
+  #   else
+  #     render json: @place.errors, status: :unprocessable_entity
+  #   end
+  # end
 
   # DELETE /places/1
   def destroy

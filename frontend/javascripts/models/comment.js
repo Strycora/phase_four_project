@@ -24,10 +24,9 @@ class Comment{
     let div = document.getElementById(this.place_id)
     let p = document.createElement("p");
       p.id = `Comment${this.id}`
-  
-    div.appendChild(p);
-  
     p.innerText = this.text
+    div.appendChild(p);
+   
   }
 
   save(){

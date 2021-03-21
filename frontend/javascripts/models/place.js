@@ -105,14 +105,36 @@ class Place {
     form().addEventListener("submit", Place.submitForm);
   }
 
-  static renderPlaces() {
-    resetMain();
-    Place.placesTemplate();
-  
-    Place.all.forEach(function (place) {
+  static renderSubsetPlaces(array){
+    array.forEach(function (place) {
       place.renderPlace();
     });
     Comment.getComments();
+  }
+
+  static renderPlaces() {
+    resetMain();
+    Place.placesTemplate();
+    Place.renderSubsetPlaces(Place.all)
+  }
+
+
+  static renderAlphabetically(){
+    resetMain();
+    Place.placesTemplate();
+
+    let sortedPlaces = Place.all.sort(function(a, b){
+      
+      let nameA = Place.stripLeadingArticle(a);
+      let nameB = Place.stripLeadingArticle(b);
+      return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+    })
+
+    Place.renderSubsetPlaces(sortedPlaces);
+  }
+
+  static stripLeadingArticle(place){
+    return place.name.toLowerCase().replace(/^(a|an|the)\s/, '');
   }
 
   static submitForm(e) {
